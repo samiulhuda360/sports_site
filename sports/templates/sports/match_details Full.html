@@ -1,0 +1,629 @@
+
+{% extends "sports/base.html" %}
+{% load blog_filters %}
+
+{% block content %}
+
+{% include 'sports/hero-slider.html' %}
+
+{% for match_details in jsonresponse %}
+<div class="section-container">
+    <div class="content">
+        <ul class="breadcrumbs _none_border">
+            <li class="_next_breadcrumbs">
+            <a href="/" class="breadcrumbs__link">Football</a>
+            <span class="breadcrumbs__arrow"></span>
+            </li>
+            <li class="_next_breadcrumbs">
+            <a href="/football/leagues" class="breadcrumbs__link">Leagues</a>
+            <span class="breadcrumbs__arrow"></span>
+            </li>
+            <li class="_next_breadcrumbs">
+            <a href="/football/leagues/italy" class="breadcrumbs__link">Italy</a>
+            <span class="breadcrumbs__arrow"></span>
+            </li>
+            <li class="_next_breadcrumbs">
+            <a href="/football/leagues/italy/serie-a" class="breadcrumbs__link">Serie A</a>
+            <span class="breadcrumbs__arrow"></span>
+            </li>
+            <li class="_next_breadcrumbs">
+            <span class="breadcrumbs__link last">{{ match_details.match_hometeam_name }} x {{ match_details.match_awayteam_name }} </span>
+            </li>
+        </ul>
+        <h1 class="game-title">{{ match_details.match_hometeam_name }} - {{ match_details.match_awayteam_name }} {{ match_details.match_date }}</h1>
+        <ul class="match-info">
+            <li class="row">
+                <span class="text">{{ match_details.match_date }}</span>
+                <span class="text">{{ match_details.match_time }}</span>
+                <span class="sep">|</span>
+                <div class="text">{{ match_details.stage_name }}</div>
+                <span class="sep sep--left"></span>
+                {% comment %} <button name="toggle-favorites" aria-label="toggle favorites" onclick="if (!window.__cfRLUnblockHandlers) return false; event.stopPropagation()" data-slug="empoli-fc-juventus-turin-2023-05-21" class="favorites-star favorites-star-games"></button> {% endcomment %}
+            </li>
+            <li class="teams" data-team-host-img-min="https://sportcdns.live/resized/50/50/team/47cf18816f2cb547592428d03f702d9cd5ef791698331d6c74bc00fc0f418aaa.png" data-team-guest-img-min="https://sportcdns.live/resized/50/50/team/c00919d65d4a774a3d3ea753cd238f936ef2231b30751b82efc85cfcbbac4e58.png" data-team-host-name-by-language="Empoli" data-team-guest-name-by-language="Juventus">
+            <div class="avatar">
+            {% comment %} <a href="/football/team/empoli-cf"> {% endcomment %}
+            <img class="pic is-loaded" width="64" height="64" src="{{ match_details.team_home_badge }}" data-src="{{ match_details.team_home_badge }}" alt="{{ match_details.match_hometeam_name }}" fetchpriority="high">
+            {% comment %} </a> {% endcomment %}
+            <a href="/football/team/empoli-cf" class="title">{{ match_details.match_hometeam_name }}</a>
+            <div class="players toggle-lines-target">
+            {% for goal in match_details.goalscorer %}
+            {% if goal.home_scorer %}   
+            <div class="player">          
+                <a href="/football/players/caputo-francesco">{{ goal.home_scorer }}</a>
+                <span>
+                <span>-</span>
+                <span>{{ goal.time }}'</span>
+                </span>                         
+            </div>
+            {% endif %}
+        {% endfor %} 
+            </div>
+            </div>
+            <ul class="match-counter" data-game-state="finished">
+                {% if match_details.match_hometeam_ft_score == match_details.match_awayteam_ft_score %}
+                <li class="counter">
+                <span class="count">
+                {{ match_details.match_hometeam_ft_score }}
+                </span>
+                <span class="colon">:</span>
+                <span class="count ">
+                {{ match_details.match_awayteam_ft_score }}
+                </span>
+                </li>
+                {% elif match_details.match_hometeam_ft_score >= match_details.match_awayteam_ft_score %}
+                <li class="counter">
+                <span class="count count--win-arrow">
+                {{ match_details.match_hometeam_ft_score }}
+                </span>
+                <span class="colon">:</span>
+                <span class="count ">
+                {{ match_details.match_awayteam_ft_score }}
+                </span>
+                </li>
+                
+                {% else %}
+                <li class="counter">
+                    <span class="count">
+                    {{ match_details.match_hometeam_ft_score }}
+                    </span>
+                    <span class="colon">:</span>
+                    <span class="count  count--win-arrow">
+                    {{ match_details.match_awayteam_ft_score }}
+                    </span>
+                </li>
+                {% endif %}
+                <li class="status color--gray">
+                    {{ match_details.match_status }}
+                </li>
+            </ul>
+            <div class="avatar">
+                <a href="/football/team/juventus-cf">
+                <img class="pic is-loaded" width="64" height="64" src="{{ match_details.team_away_badge }}" data-src="{{ match_details.team_away_badge }}" alt="Juventus" fetchpriority="high">
+                </a>
+                <a href="/football/team/juventus-cf" class="title">{{ match_details.match_awayteam_name }}</a>
+                <div class="players toggle-lines-target">
+
+                    {% for goal in match_details.goalscorer %}
+                    {% if goal.away_scorer %}   
+                    <div class="player">          
+                        <a href="/football/players/caputo-francesco">{{ goal.away_scorer }}</a>
+                        <span>
+                        <span>-</span>
+                        <span>{{ goal.time }}'</span>
+                        </span>                         
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            </li>
+        </ul>
+        <div class="tab-menu__container">
+            <ul class="tab-menu" data-show-arrows="" data-game-id="62b5a6a3536d9f6ccc038a36" data-tournament-id="5c9dfa8299bab8590b159196" data-host-id="5c9dfc5e99bab85b7f18bfd5" data-guest-id="5c9dfb8899bab8634209af9c">
+                <li class="tab-menu__item">
+                <a href="/football/game/empoli-fc-juventus-turin-2023-05-21" class="tab-menu__link active">Summary</a>
+                </li>
+            </ul>
+        <button data-direction="left" class="button__arrow button__arrow--left"></button>
+        <button data-direction="right" class="button__arrow button__arrow--right"></button></div>
+    <div class="tab tab__summary">
+        <div class="tab-header ">
+            <a href="/football/team/empoli-cf" data-host="true" class="tab-header-team">
+            <img class="lazy " width="24" height="24" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMy4xMzQgOS41NDd2MTAuMDVjLjgxLS41MzIgMS41Ni0xLjE5NCAyLjIyNi0xLjk4M2wuMDUyLS4wNjJWOS41NDdoLTIuMjc4em0tOC4zOS0xLjE1NGwuMDMuMTloMTQuNDEzbC4wMzQtLjE4NGEzMS41NyAzMS41NyAwIDAwLjQ3LTQuMDY2bC4wMDctLjE2OC0uMTU5LS4wNTRjLS45MzMtLjMxOC0zLjUyNC0xLjA2NS03LjQzLTEuMTQzYTI2Ljc3OSAyNi43NzkgMCAwMC0uNDQtLjAwNGMtMy40NDcgMC02LjA5Ny44MDUtNy4wNzYgMS4xNTFsLS4xNS4wNTR2LjE1N2MwIDEuNDAzLjEwMSAyLjc3MS4zMDEgNC4wNjd6bTQuMTEgOS4yMWMuODE3LjkwNSAxLjU4OSAxLjUyMyAyLjE2MyAxLjkyN1Y5LjU0N0g4Ljc5NnY3Ljk5MmwuMDU4LjA2NHptLTEuNDQyLTEuODg0bC40MTQuNjRWOS41NDdINC45NDhsLjA2LjI3MmMuNDkgMi4yMDYgMS4yOTggNC4xOTEgMi40MDQgNS45em05LjM5Mi0uMmMuOTAxLTEuNTk3IDEuNjE1LTMuNTEzIDIuMTIyLTUuNjk4bC4wNjQtLjI3NGgtMi42MDd2Ni43MTdsLjQyLS43NDV6TTIwLjY3NyAzLjg0Yy0uMDAxLjEzOC0uMDI4IDMuNDMyLTEuMDQyIDcuMTg3LTEuMzY4IDUuMDY2LTMuOTAzIDguNTc0LTcuMzMxIDEwLjE0NWwtLjE5OS4wOTEtLjItLjA4N2MtLjM1Mi0uMTU0LTguNjQxLTMuOTI2LTguNDI3LTE3LjM0NWwuMDA1LS4zMTIuMjg3LS4xMjNDMy44MDMgMy4zODIgNy4wNjQgMiAxMS43MDIgMmMuMTQyIDAgLjI4NC4wMDEuNDI3LjAwNCA1LjI0OC4xMDQgOC4xMzYgMS4zNCA4LjI1NyAxLjM5M2wuMjkxLjEyN3YuMzE2em0xLjI5OCA4LjI1NmMuMDQzLjU3NS4wNiAxLjU1Ni0uMiAyLjQyMy0uMzE2IDEuMDU3LTEuNjY1IDEuODQ3LTIuMTk2IDIuMTIzQTYuNTgzIDYuNTgzIDAgMDEyMSAxNi4yOWEuMzMuMzMgMCAwMS4zNjIuNDI2Yy0uMTc3LjU0OC0uNTMgMS40NjYtMS4wOTggMi4xNzYtLjM1NS40NDMtLjkzNS43Mi0xLjQ5Ni44OTNsLS4wMjUtLjAwNWMuMjMyLjA3Ni40NC4xNTkuNjEuMjMxLjIyNC4wOTcuMjcxLjM5LjA4Ny41NS0uNDM4LjM3OS0xLjIyMi45ODItMi4wOCAxLjI5Ni0xLjYyOC4zNzQtMi4yNjUtLjA0Ny0yLjkwOC0uNjE4LjMyLS4zMS42MjYtLjY0LjkyMi0uOTg4YTUuNjQ2IDUuNjQ2IDAgMDExLjE2MS0uNjA3Yy4yNTEtLjA5Mi41MjYtLjEyNy44MDctLjEyNC4wNjEtLjE5My4xNDItLjQyMi4yNDQtLjY2OS0uMDU1LS4xMi0uMTEtLjIwMi0uMTY0LS4yODNhMS41MzUgMS41MzUgMCAwMS0uMjQ2LS41MmMuNTgzLTEuMDIxIDEuMTgtMi4yMTkgMS42MjItMy40NC4yMDguNDM3LjM3Mi44MDIuNDk2IDEuNDktLjAzOS0uNTgtLjA0LTEuNDU3LjE5Ny0yLjI0OC4yNzgtLjkzIDEuMzY2LTEuNjYzIDEuOTg4LTIuMDE2LjIxMi0uMTIuNDc4LjAyLjQ5Ni4yNnptLTEzLjU0NyA4LjAzYTUuNDA5IDUuNDA5IDAgMDAtLjk2My0uNDggMi4yNjUgMi4yNjUgMCAwMC0uODA3LS4xMjUgOC41NTggOC41NTggMCAwMC0uMjQ0LS42NjljLjExNS0uMjU0LjI0My0uNTcuMzU0LS45MTdsLS4wMjEtLjAzM2MtLjU5LS45MTUtMS4yMDgtMS44NzUtMS42OTctMy4wNjMtLjE2LjM4OC0uMjU2Ljc3LS4zNDQgMS4yNi4wMzktLjU4LjA0LTEuNDU3LS4xOTYtMi4yNDgtLjI3OS0uOTMtMS4zNjctMS42NjItMS45OS0yLjAxNmEuMzMyLjMzMiAwIDAwLS40OTUuMjZjLS4wNDMuNTc2LS4wNiAxLjU1Ny4yIDIuNDI0LjMxNiAxLjA1OCAxLjY2NSAxLjg0NyAyLjE5NiAyLjEyM0E2LjUzNCA2LjUzNCAwIDAwMyAxNi4yOTFhLjMzLjMzIDAgMDAtLjM2Mi40MjVjLjE3Ny41NDguNTMgMS40NjYgMS4wOTkgMi4xNzYuMzU0LjQ0My45MzQuNzIgMS40OTUuODkzbC4wMjUtLjAwNWE3Ljk4IDcuOTggMCAwMC0uNjEuMjMxLjMyOC4zMjggMCAwMC0uMDg3LjU1Yy40MzguMzc5IDEuMjIyLjk4MiAyLjA3OSAxLjI5NiAxLjYxMi4zNyAyLjI1My0uMDM5IDIuODktLjZhMTYuODkzIDE2Ljg5MyAwIDAxLTEuMS0xLjEzM3pNMTIuNjA3IDUuMDhsMS4wNDMuMDg5Yy4xOS4wMTQuMjY3LjI1MS4xMjMuMzc2bC0uNzkyLjY4NC4yMzcgMS4wMTRhLjIxNS4yMTUgMCAwMS0uMzIyLjIzMkwxMiA2LjkzNmwtLjg5Ni41MzhhLjIxNS4yMTUgMCAwMS0uMzIyLS4yMzNsLjIzOC0xLjAxNS0uNzkzLS42ODNhLjIxNC4yMTQgMCAwMS4xMjMtLjM3NmwxLjA0My0uMDg5LjQwOC0uOTU3YS4yMTYuMjE2IDAgMDEuMzk3IDBsLjQwOS45NnptLTMuOTM2LjkyMWwtLjYzNi0uMDUyLS4yNS0uNTc2Yy0uMDQ0LS4xMDQtLjE5Ny0uMTA0LS4yNDIgMGwtLjI0OS41NzVMNi42NTggNmEuMTI4LjEyOCAwIDAwLS4wNzUuMjI2bC40ODMuNDEtLjE0NS42MDljLS4wMjYuMTExLjA5Ny4xOTkuMTk3LjE0bC41NDYtLjMyMy41NDcuMzI0Yy4xLjA1OS4yMjMtLjAyOS4xOTctLjE0bC0uMTQ1LS42MDguNDgzLS40MTFjLjA4OS0uMDc1LjA0MS0uMjE2LS4wNzUtLjIyNnptOC4wMzUtLjA1MmwuNjM2LjA1MmMuMTE2LjAxLjE2My4xNTEuMDc2LjIyNmwtLjQ4NC40MS4xNDQuNjFjLjAyNy4xMS0uMDk1LjE5OC0uMTk1LjE0bC0uNTQ3LS4zMjUtLjU0Ny4zMjNjLS4xLjA1OS0uMjIzLS4wMjktLjE5Ny0uMTRsLjE0Ni0uNjA4LS40ODQtLjQxMWMtLjA4OS0uMDc1LS4wNDEtLjIxNy4wNzUtLjIyNmwuNjM2LS4wNTIuMjUtLjU3NWMuMDQ0LS4xMDQuMTk3LS4xMDQuMjQyIDBsLjI0OS41NzZ6IiBmaWxsPSIjQTJBREI4Ii8+PC9zdmc+Cg==" data-src="https://sportcdns.live/resized/48/48/team/47cf18816f2cb547592428d03f702d9cd5ef791698331d6c74bc00fc0f418aaa.png" alt="Empoli" loading="lazy">
+            <span class="tab-header-team__title">
+            EMP
+            </span>
+            </a>
+            <h3 class="tab-header-title">Penalty Shootout</h3>
+            <a href="/football/team/juventus-cf" data-guest="true" class="tab-header-team">
+            <img class="lazy " width="24" height="24" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMy4xMzQgOS41NDd2MTAuMDVjLjgxLS41MzIgMS41Ni0xLjE5NCAyLjIyNi0xLjk4M2wuMDUyLS4wNjJWOS41NDdoLTIuMjc4em0tOC4zOS0xLjE1NGwuMDMuMTloMTQuNDEzbC4wMzQtLjE4NGEzMS41NyAzMS41NyAwIDAwLjQ3LTQuMDY2bC4wMDctLjE2OC0uMTU5LS4wNTRjLS45MzMtLjMxOC0zLjUyNC0xLjA2NS03LjQzLTEuMTQzYTI2Ljc3OSAyNi43NzkgMCAwMC0uNDQtLjAwNGMtMy40NDcgMC02LjA5Ny44MDUtNy4wNzYgMS4xNTFsLS4xNS4wNTR2LjE1N2MwIDEuNDAzLjEwMSAyLjc3MS4zMDEgNC4wNjd6bTQuMTEgOS4yMWMuODE3LjkwNSAxLjU4OSAxLjUyMyAyLjE2MyAxLjkyN1Y5LjU0N0g4Ljc5NnY3Ljk5MmwuMDU4LjA2NHptLTEuNDQyLTEuODg0bC40MTQuNjRWOS41NDdINC45NDhsLjA2LjI3MmMuNDkgMi4yMDYgMS4yOTggNC4xOTEgMi40MDQgNS45em05LjM5Mi0uMmMuOTAxLTEuNTk3IDEuNjE1LTMuNTEzIDIuMTIyLTUuNjk4bC4wNjQtLjI3NGgtMi42MDd2Ni43MTdsLjQyLS43NDV6TTIwLjY3NyAzLjg0Yy0uMDAxLjEzOC0uMDI4IDMuNDMyLTEuMDQyIDcuMTg3LTEuMzY4IDUuMDY2LTMuOTAzIDguNTc0LTcuMzMxIDEwLjE0NWwtLjE5OS4wOTEtLjItLjA4N2MtLjM1Mi0uMTU0LTguNjQxLTMuOTI2LTguNDI3LTE3LjM0NWwuMDA1LS4zMTIuMjg3LS4xMjNDMy44MDMgMy4zODIgNy4wNjQgMiAxMS43MDIgMmMuMTQyIDAgLjI4NC4wMDEuNDI3LjAwNCA1LjI0OC4xMDQgOC4xMzYgMS4zNCA4LjI1NyAxLjM5M2wuMjkxLjEyN3YuMzE2em0xLjI5OCA4LjI1NmMuMDQzLjU3NS4wNiAxLjU1Ni0uMiAyLjQyMy0uMzE2IDEuMDU3LTEuNjY1IDEuODQ3LTIuMTk2IDIuMTIzQTYuNTgzIDYuNTgzIDAgMDEyMSAxNi4yOWEuMzMuMzMgMCAwMS4zNjIuNDI2Yy0uMTc3LjU0OC0uNTMgMS40NjYtMS4wOTggMi4xNzYtLjM1NS40NDMtLjkzNS43Mi0xLjQ5Ni44OTNsLS4wMjUtLjAwNWMuMjMyLjA3Ni40NC4xNTkuNjEuMjMxLjIyNC4wOTcuMjcxLjM5LjA4Ny41NS0uNDM4LjM3OS0xLjIyMi45ODItMi4wOCAxLjI5Ni0xLjYyOC4zNzQtMi4yNjUtLjA0Ny0yLjkwOC0uNjE4LjMyLS4zMS42MjYtLjY0LjkyMi0uOTg4YTUuNjQ2IDUuNjQ2IDAgMDExLjE2MS0uNjA3Yy4yNTEtLjA5Mi41MjYtLjEyNy44MDctLjEyNC4wNjEtLjE5My4xNDItLjQyMi4yNDQtLjY2OS0uMDU1LS4xMi0uMTEtLjIwMi0uMTY0LS4yODNhMS41MzUgMS41MzUgMCAwMS0uMjQ2LS41MmMuNTgzLTEuMDIxIDEuMTgtMi4yMTkgMS42MjItMy40NC4yMDguNDM3LjM3Mi44MDIuNDk2IDEuNDktLjAzOS0uNTgtLjA0LTEuNDU3LjE5Ny0yLjI0OC4yNzgtLjkzIDEuMzY2LTEuNjYzIDEuOTg4LTIuMDE2LjIxMi0uMTIuNDc4LjAyLjQ5Ni4yNnptLTEzLjU0NyA4LjAzYTUuNDA5IDUuNDA5IDAgMDAtLjk2My0uNDggMi4yNjUgMi4yNjUgMCAwMC0uODA3LS4xMjUgOC41NTggOC41NTggMCAwMC0uMjQ0LS42NjljLjExNS0uMjU0LjI0My0uNTcuMzU0LS45MTdsLS4wMjEtLjAzM2MtLjU5LS45MTUtMS4yMDgtMS44NzUtMS42OTctMy4wNjMtLjE2LjM4OC0uMjU2Ljc3LS4zNDQgMS4yNi4wMzktLjU4LjA0LTEuNDU3LS4xOTYtMi4yNDgtLjI3OS0uOTMtMS4zNjctMS42NjItMS45OS0yLjAxNmEuMzMyLjMzMiAwIDAwLS40OTUuMjZjLS4wNDMuNTc2LS4wNiAxLjU1Ny4yIDIuNDI0LjMxNiAxLjA1OCAxLjY2NSAxLjg0NyAyLjE5NiAyLjEyM0E2LjUzNCA2LjUzNCAwIDAwMyAxNi4yOTFhLjMzLjMzIDAgMDAtLjM2Mi40MjVjLjE3Ny41NDguNTMgMS40NjYgMS4wOTkgMi4xNzYuMzU0LjQ0My45MzQuNzIgMS40OTUuODkzbC4wMjUtLjAwNWE3Ljk4IDcuOTggMCAwMC0uNjEuMjMxLjMyOC4zMjggMCAwMC0uMDg3LjU1Yy40MzguMzc5IDEuMjIyLjk4MiAyLjA3OSAxLjI5NiAxLjYxMi4zNyAyLjI1My0uMDM5IDIuODktLjZhMTYuODkzIDE2Ljg5MyAwIDAxLTEuMS0xLjEzM3pNMTIuNjA3IDUuMDhsMS4wNDMuMDg5Yy4xOS4wMTQuMjY3LjI1MS4xMjMuMzc2bC0uNzkyLjY4NC4yMzcgMS4wMTRhLjIxNS4yMTUgMCAwMS0uMzIyLjIzMkwxMiA2LjkzNmwtLjg5Ni41MzhhLjIxNS4yMTUgMCAwMS0uMzIyLS4yMzNsLjIzOC0xLjAxNS0uNzkzLS42ODNhLjIxNC4yMTQgMCAwMS4xMjMtLjM3NmwxLjA0My0uMDg5LjQwOC0uOTU3YS4yMTYuMjE2IDAgMDEuMzk3IDBsLjQwOS45NnptLTMuOTM2LjkyMWwtLjYzNi0uMDUyLS4yNS0uNTc2Yy0uMDQ0LS4xMDQtLjE5Ny0uMTA0LS4yNDIgMGwtLjI0OS41NzVMNi42NTggNmEuMTI4LjEyOCAwIDAwLS4wNzUuMjI2bC40ODMuNDEtLjE0NS42MDljLS4wMjYuMTExLjA5Ny4xOTkuMTk3LjE0bC41NDYtLjMyMy41NDcuMzI0Yy4xLjA1OS4yMjMtLjAyOS4xOTctLjE0bC0uMTQ1LS42MDguNDgzLS40MTFjLjA4OS0uMDc1LjA0MS0uMjE2LS4wNzUtLjIyNnptOC4wMzUtLjA1MmwuNjM2LjA1MmMuMTE2LjAxLjE2My4xNTEuMDc2LjIyNmwtLjQ4NC40MS4xNDQuNjFjLjAyNy4xMS0uMDk1LjE5OC0uMTk1LjE0bC0uNTQ3LS4zMjUtLjU0Ny4zMjNjLS4xLjA1OS0uMjIzLS4wMjktLjE5Ny0uMTRsLjE0Ni0uNjA4LS40ODQtLjQxMWMtLjA4OS0uMDc1LS4wNDEtLjIxNy4wNzUtLjIyNmwuNjM2LS4wNTIuMjUtLjU3NWMuMDQ0LS4xMDQuMTk3LS4xMDQuMjQyIDBsLjI0OS41NzZ6IiBmaWxsPSIjQTJBREI4Ii8+PC9zdmc+Cg==" data-src="https://sportcdns.live/resized/48/48/team/c00919d65d4a774a3d3ea753cd238f936ef2231b30751b82efc85cfcbbac4e58.png" alt="Juventus" loading="lazy">
+            <span class="span tab-header-team__title">
+            JUV
+            </span>
+            </a>
+        </div>
+        <div class="penalty_scorer">
+            <div class="penalty_scorer_column">
+                {% for goal in match_details.goalscorer %}            
+                    {% if goal.score_info_time == "Penalty" %}
+                    {% if goal.home_scorer %}
+                        <div class="goalscorer">
+                            <a href="/football/players/{{ goal.home_scorer_id }}">{{ goal.home_scorer }}</a>
+                        </div>
+                    {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="penalty_scorer_column">
+                {% for goal in match_details.goalscorer %}
+                    {% if goal.score_info_time == "Penalty" %}
+                    {% if goal.away_scorer %}
+                        <div class="goalscorer">
+                            <a href="/football/players/{{ goal.away_scorer_id }}">{{ goal.away_scorer }}</a>
+                        </div>
+                    {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="tab-header">
+        <a href="/football/team/empoli-cf" data-host="true" class="tab-header-team">
+        <img class="is-loaded" width="24" height="24" src="https://sportcdns.live/resized/48/48/team/47cf18816f2cb547592428d03f702d9cd5ef791698331d6c74bc00fc0f418aaa.png" data-src="https://sportcdns.live/resized/48/48/team/47cf18816f2cb547592428d03f702d9cd5ef791698331d6c74bc00fc0f418aaa.png" alt="Empoli" loading="lazy">
+        <span class="tab-header-team__title">EMP</span>
+        </a>
+        <h3 class="tab-header-title">Match details</h3>
+        <a href="/football/team/juventus-cf" data-guest="true" class="tab-header-team">
+        <img class="is-loaded" width="24" height="24" src="https://sportcdns.live/resized/48/48/team/c00919d65d4a774a3d3ea753cd238f936ef2231b30751b82efc85cfcbbac4e58.png" data-src="https://sportcdns.live/resized/48/48/team/c00919d65d4a774a3d3ea753cd238f936ef2231b30751b82efc85cfcbbac4e58.png" alt="Juventus" loading="lazy">
+        <span class="span tab-header-team__title">JUV</span>
+        </a>
+        </div>
+        <div class="tl">
+        <div class="half__header" data-period="regular_period_1">
+        <span class="half__icon"></span>
+        <span class="half__title">1st Half</span>
+        <span class="half__count">{{ match_details.match_hometeam_halftime_score }}:{{ match_details.match_awayteam_halftime_score }}</span>
+        </div>
+        {% for goal in match_details.goalscorer %}        
+        {% if goal.home_scorer and not goal.score_info_time == "Penalty" and goal.score_info_time == "1st Half" %}
+        <div data-source-id="1462192175" class="tl-event host">
+        <span data-suffix="'" class="tl-minutes">
+        {{ goal.time }}
+        </span>
+        <span data-icon="penalty-goal" class="tl-icon">
+        </span>
+        <span class="tl-players">
+        <a href="/football/players/caputo-francesco" class="tl-player">{{ goal.home_scorer }}</a>
+        </span>
+        </div>
+        {% elif goal.away_scorer and not goal.score_info_time == "Penalty" and goal.score_info_time == "1st Half" %}
+        <div data-source-id="1462194351" class="tl-event guest">
+        <span data-suffix="'" class="tl-minutes">
+        {{ goal.time }}
+        </span>
+        <span data-icon="goal" class="tl-icon">
+        </span>
+        <span class="tl-players">
+        <a href="/football/players/luperto-sebastiano" class="tl-player">{{ goal.away_scorer }}</a>
+        </span>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <div class="half__header" data-period="regular_period_2">
+        <span class="half__icon"></span>
+        <span class="half__title">2nd Half</span>
+        <span class="half__count"> 2:1</span>
+        </div>
+        {% for goal in match_details.goalscorer %}        
+        {% if goal.home_scorer and not goal.score_info_time == "Penalty" and goal.score_info_time == "2nd Half" %}
+        <div data-source-id="1462192175" class="tl-event host">
+        <span data-suffix="'" class="tl-minutes">
+        {{ goal.time }}
+        </span>
+        <span data-icon="penalty-goal" class="tl-icon">
+        </span>
+        <span class="tl-players">
+        <a href="/football/players/caputo-francesco" class="tl-player">{{ goal.home_scorer }}</a>
+        </span>
+        </div>
+        {% elif goal.away_scorer and not goal.score_info_time == "Penalty" and goal.score_info_time == "2nd Half" %}
+        <div data-source-id="1462194351" class="tl-event guest">
+        <span data-suffix="'" class="tl-minutes">
+        {{ goal.time }}
+        </span>
+        <span data-icon="goal" class="tl-icon">
+        </span>
+        <span class="tl-players">
+        <a href="/football/players/luperto-sebastiano" class="tl-player">{{ goal.away_scorer }}</a>
+        </span>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <div class="tab-header">
+            <h4 class="tab-header-title">Cards</h4>
+        </div>
+            {% for card in match_details.cards %}        
+            {% if card.home_fault %}
+            <div data-source-id="1462192175" class="tl-event host">
+            <span data-suffix="'" class="tl-minutes">
+            {{ card.time }}
+            </span>
+            {% if card.card == 'yellow card' %}
+            <span data-icon="yellow-card" class="tl-icon">
+            </span>
+            {% elif card.card == 'red card' %}
+            <span data-icon="red-card" class="tl-icon">
+            </span>
+            {% endif %}
+            <span class="tl-players">
+            <a href="/football/players/caputo-francesco" class="tl-player">{{ card.home_fault }}</a>
+            </span>
+            </div>
+            {% elif card.away_fault %}
+            <div data-source-id="1462194351" class="tl-event guest">
+            <span data-suffix="'" class="tl-minutes">
+            {{ card.time }}
+            </span>
+            {% if card.card == 'yellow card' %}
+            <span data-icon="yellow-card" class="tl-icon">
+            </span>
+            {% elif card.card == 'red card' %}
+            <span data-icon="red-card" class="tl-icon">
+            </span>
+            {% endif %}
+            <span class="tl-players">
+            <a href="/football/players/luperto-sebastiano" class="tl-player">{{ card.away_fault }}</a>
+            </span>
+            </div>
+            {% endif %}
+        {% endfor %}
+        <div class="tab-header">
+            <h4 class="tab-header-title">Substitutions ({{ match_details.match_hometeam_name }}) </h4>
+        </div>
+        {% for subs in match_details.substitutions.home %}    
+        <div data-source-id="1462216691" class="tl-event host">
+        <span data-suffix="'" class="tl-minutes">
+        {{ subs.time }}
+        </span>
+        <span data-icon="replace" class="tl-icon">
+        </span>
+        <span class="tl-players">
+        {% with subs.substitution|split_string:"|" as names %}
+        <a class="tl-player" href="/football/players/paredes-leandro">
+            {{ names.0 }}
+        </a>
+        <a class="tl-player" href="/football/players/miretti-fabio">
+        Out: {{ names.1 }}
+        </a>
+        </span>
+        {% endwith %}
+        </div>
+        {% endfor %}
+        <div class="tab-header">
+            <h4 class="tab-header-title">Substitutions ({{ match_details.match_awayteam_name }}) </h4>
+        </div>
+        {% for subs in match_details.substitutions.away %}    
+        <div data-source-id="1462216691" class="tl-event guest">
+        <span data-suffix="'" class="tl-minutes">
+        {{ subs.time }}
+        </span>
+        <span data-icon="replace" class="tl-icon">
+        </span>
+        <span class="tl-players">
+        {% with subs.substitution|split_string:"|" as names %}
+        <a class="tl-player" href="/football/players/paredes-leandro">
+            {{ names.0 }}
+        </a>
+        <a class="tl-player" href="/football/players/miretti-fabio">
+        Out: {{ names.1 }}
+        </a>
+        </span>
+        {% endwith %}
+        </div>
+        {% endfor %}
+        
+        </div>
+
+        <!-- Statistics -->
+        <div class="tab-header  ">
+            <a href="/football/team/empoli-cf" data-host="true" class="tab-header-team">
+            <img class="is-loaded" width="24" height="24" src="https://sportcdns.live/resized/48/48/team/47cf18816f2cb547592428d03f702d9cd5ef791698331d6c74bc00fc0f418aaa.png" data-src="https://sportcdns.live/resized/48/48/team/47cf18816f2cb547592428d03f702d9cd5ef791698331d6c74bc00fc0f418aaa.png" alt="Empoli" loading="lazy">
+            <span class="tab-header-team__title">
+            EMP
+            </span>
+            </a>
+        <h3 class="tab-header-title">Statistics</h3>
+        <a href="/football/team/juventus-cf" data-guest="true" class="tab-header-team">
+        <img class="lazy " width="24" height="24" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMy4xMzQgOS41NDd2MTAuMDVjLjgxLS41MzIgMS41Ni0xLjE5NCAyLjIyNi0xLjk4M2wuMDUyLS4wNjJWOS41NDdoLTIuMjc4em0tOC4zOS0xLjE1NGwuMDMuMTloMTQuNDEzbC4wMzQtLjE4NGEzMS41NyAzMS41NyAwIDAwLjQ3LTQuMDY2bC4wMDctLjE2OC0uMTU5LS4wNTRjLS45MzMtLjMxOC0zLjUyNC0xLjA2NS03LjQzLTEuMTQzYTI2Ljc3OSAyNi43NzkgMCAwMC0uNDQtLjAwNGMtMy40NDcgMC02LjA5Ny44MDUtNy4wNzYgMS4xNTFsLS4xNS4wNTR2LjE1N2MwIDEuNDAzLjEwMSAyLjc3MS4zMDEgNC4wNjd6bTQuMTEgOS4yMWMuODE3LjkwNSAxLjU4OSAxLjUyMyAyLjE2MyAxLjkyN1Y5LjU0N0g4Ljc5NnY3Ljk5MmwuMDU4LjA2NHptLTEuNDQyLTEuODg0bC40MTQuNjRWOS41NDdINC45NDhsLjA2LjI3MmMuNDkgMi4yMDYgMS4yOTggNC4xOTEgMi40MDQgNS45em05LjM5Mi0uMmMuOTAxLTEuNTk3IDEuNjE1LTMuNTEzIDIuMTIyLTUuNjk4bC4wNjQtLjI3NGgtMi42MDd2Ni43MTdsLjQyLS43NDV6TTIwLjY3NyAzLjg0Yy0uMDAxLjEzOC0uMDI4IDMuNDMyLTEuMDQyIDcuMTg3LTEuMzY4IDUuMDY2LTMuOTAzIDguNTc0LTcuMzMxIDEwLjE0NWwtLjE5OS4wOTEtLjItLjA4N2MtLjM1Mi0uMTU0LTguNjQxLTMuOTI2LTguNDI3LTE3LjM0NWwuMDA1LS4zMTIuMjg3LS4xMjNDMy44MDMgMy4zODIgNy4wNjQgMiAxMS43MDIgMmMuMTQyIDAgLjI4NC4wMDEuNDI3LjAwNCA1LjI0OC4xMDQgOC4xMzYgMS4zNCA4LjI1NyAxLjM5M2wuMjkxLjEyN3YuMzE2em0xLjI5OCA4LjI1NmMuMDQzLjU3NS4wNiAxLjU1Ni0uMiAyLjQyMy0uMzE2IDEuMDU3LTEuNjY1IDEuODQ3LTIuMTk2IDIuMTIzQTYuNTgzIDYuNTgzIDAgMDEyMSAxNi4yOWEuMzMuMzMgMCAwMS4zNjIuNDI2Yy0uMTc3LjU0OC0uNTMgMS40NjYtMS4wOTggMi4xNzYtLjM1NS40NDMtLjkzNS43Mi0xLjQ5Ni44OTNsLS4wMjUtLjAwNWMuMjMyLjA3Ni40NC4xNTkuNjEuMjMxLjIyNC4wOTcuMjcxLjM5LjA4Ny41NS0uNDM4LjM3OS0xLjIyMi45ODItMi4wOCAxLjI5Ni0xLjYyOC4zNzQtMi4yNjUtLjA0Ny0yLjkwOC0uNjE4LjMyLS4zMS42MjYtLjY0LjkyMi0uOTg4YTUuNjQ2IDUuNjQ2IDAgMDExLjE2MS0uNjA3Yy4yNTEtLjA5Mi41MjYtLjEyNy44MDctLjEyNC4wNjEtLjE5My4xNDItLjQyMi4yNDQtLjY2OS0uMDU1LS4xMi0uMTEtLjIwMi0uMTY0LS4yODNhMS41MzUgMS41MzUgMCAwMS0uMjQ2LS41MmMuNTgzLTEuMDIxIDEuMTgtMi4yMTkgMS42MjItMy40NC4yMDguNDM3LjM3Mi44MDIuNDk2IDEuNDktLjAzOS0uNTgtLjA0LTEuNDU3LjE5Ny0yLjI0OC4yNzgtLjkzIDEuMzY2LTEuNjYzIDEuOTg4LTIuMDE2LjIxMi0uMTIuNDc4LjAyLjQ5Ni4yNnptLTEzLjU0NyA4LjAzYTUuNDA5IDUuNDA5IDAgMDAtLjk2My0uNDggMi4yNjUgMi4yNjUgMCAwMC0uODA3LS4xMjUgOC41NTggOC41NTggMCAwMC0uMjQ0LS42NjljLjExNS0uMjU0LjI0My0uNTcuMzU0LS45MTdsLS4wMjEtLjAzM2MtLjU5LS45MTUtMS4yMDgtMS44NzUtMS42OTctMy4wNjMtLjE2LjM4OC0uMjU2Ljc3LS4zNDQgMS4yNi4wMzktLjU4LjA0LTEuNDU3LS4xOTYtMi4yNDgtLjI3OS0uOTMtMS4zNjctMS42NjItMS45OS0yLjAxNmEuMzMyLjMzMiAwIDAwLS40OTUuMjZjLS4wNDMuNTc2LS4wNiAxLjU1Ny4yIDIuNDI0LjMxNiAxLjA1OCAxLjY2NSAxLjg0NyAyLjE5NiAyLjEyM0E2LjUzNCA2LjUzNCAwIDAwMyAxNi4yOTFhLjMzLjMzIDAgMDAtLjM2Mi40MjVjLjE3Ny41NDguNTMgMS40NjYgMS4wOTkgMi4xNzYuMzU0LjQ0My45MzQuNzIgMS40OTUuODkzbC4wMjUtLjAwNWE3Ljk4IDcuOTggMCAwMC0uNjEuMjMxLjMyOC4zMjggMCAwMC0uMDg3LjU1Yy40MzguMzc5IDEuMjIyLjk4MiAyLjA3OSAxLjI5NiAxLjYxMi4zNyAyLjI1My0uMDM5IDIuODktLjZhMTYuODkzIDE2Ljg5MyAwIDAxLTEuMS0xLjEzM3pNMTIuNjA3IDUuMDhsMS4wNDMuMDg5Yy4xOS4wMTQuMjY3LjI1MS4xMjMuMzc2bC0uNzkyLjY4NC4yMzcgMS4wMTRhLjIxNS4yMTUgMCAwMS0uMzIyLjIzMkwxMiA2LjkzNmwtLjg5Ni41MzhhLjIxNS4yMTUgMCAwMS0uMzIyLS4yMzNsLjIzOC0xLjAxNS0uNzkzLS42ODNhLjIxNC4yMTQgMCAwMS4xMjMtLjM3NmwxLjA0My0uMDg5LjQwOC0uOTU3YS4yMTYuMjE2IDAgMDEuMzk3IDBsLjQwOS45NnptLTMuOTM2LjkyMWwtLjYzNi0uMDUyLS4yNS0uNTc2Yy0uMDQ0LS4xMDQtLjE5Ny0uMTA0LS4yNDIgMGwtLjI0OS41NzVMNi42NTggNmEuMTI4LjEyOCAwIDAwLS4wNzUuMjI2bC40ODMuNDEtLjE0NS42MDljLS4wMjYuMTExLjA5Ny4xOTkuMTk3LjE0bC41NDYtLjMyMy41NDcuMzI0Yy4xLjA1OS4yMjMtLjAyOS4xOTctLjE0bC0uMTQ1LS42MDguNDgzLS40MTFjLjA4OS0uMDc1LjA0MS0uMjE2LS4wNzUtLjIyNnptOC4wMzUtLjA1MmwuNjM2LjA1MmMuMTE2LjAxLjE2My4xNTEuMDc2LjIyNmwtLjQ4NC40MS4xNDQuNjFjLjAyNy4xMS0uMDk1LjE5OC0uMTk1LjE0bC0uNTQ3LS4zMjUtLjU0Ny4zMjNjLS4xLjA1OS0uMjIzLS4wMjktLjE5Ny0uMTRsLjE0Ni0uNjA4LS40ODQtLjQxMWMtLjA4OS0uMDc1LS4wNDEtLjIxNy4wNzUtLjIyNmwuNjM2LS4wNTIuMjUtLjU3NWMuMDQ0LS4xMDQuMTk3LS4xMDQuMjQyIDBsLjI0OS41NzZ6IiBmaWxsPSIjQTJBREI4Ii8+PC9zdmc+Cg==" data-src="https://sportcdns.live/resized/48/48/team/c00919d65d4a774a3d3ea753cd238f936ef2231b30751b82efc85cfcbbac4e58.png" alt="Juventus" loading="lazy">
+        <span class="span tab-header-team__title">
+        JUV
+        </span>
+        </a>
+        </div>
+        <div class="stat">
+        <div class="stat-tabs">
+        <div data-tab-id="match-stats" class="stat-tab -active">
+        <div class="stat-list">
+        <div data-statistic-row="ballPossession" class="stat__row">
+            {% for stat in match_details.statistics %}
+                {% if stat.type == 'Ball Possession' %}
+        <div class="stat__score ">{{ stat.home }}</div> 
+                {% endif %}
+            {% endfor %}       
+        <div class="stat__title">Ball possession</div>
+        {% for stat in match_details.statistics %}
+                {% if stat.type == 'Ball Possession' %}
+        <div class="stat__score -active">{{ stat.away }}</div> 
+                {% endif %}
+            {% endfor %}  
+        </div>
+        <div class="stat__percents">
+            {% for stat in match_details.statistics %}
+            {% if stat.type == 'Ball Possession' %}
+        <div class="stat__percent -home" style="--width:{{ stat.home }};"></div>
+        {% endif %}
+        {% endfor %}    
+        {% for stat in match_details.statistics %}
+        {% if stat.type == 'Ball Possession' %}
+        <div class="stat__percent -away" style="--width:{{ stat.away }};"></div>
+        {% endif %}
+        {% endfor %}  
+        </div>
+        <div class="stat__row -no-border" data-statistic-row="shotsOnTarget">
+            {% for stat in match_details.statistics %}
+            {% if stat.type == 'Shots On Goal' %}
+        <div class="stat__score -active">{{ stat.home }}</div>
+        {% endif %}
+        {% endfor %}  
+        <div class="stat__title">Shots on goal</div>
+        {% for stat in match_details.statistics %}
+        {% if stat.type == 'Shots On Goal' %}
+        <div class="stat__score ">{{ stat.away }}</div>
+        {% endif %}
+        {% endfor %} 
+        </div>
+        <div class="stat__row -no-border" data-statistic-row="shotsOnTarget">
+            {% for stat in match_details.statistics %}
+            {% if stat.type == 'Shots Off Goal' %}
+        <div class="stat__score -active">{{ stat.home }}</div>
+        {% endif %}
+        {% endfor %}  
+        <div class="stat__title">Shots off goal</div>
+        {% for stat in match_details.statistics %}
+        {% if stat.type == 'Shots Off Goal' %}
+        <div class="stat__score ">{{ stat.away }}</div>
+        {% endif %}
+        {% endfor %} 
+        </div>
+        <div class="stat-bars hidden" style="height: 58px;">
+        <div class="stat-bars--home">
+        <div class="stat-bars__bar -inner" style="--inner-width:60%;"></div>
+        <div class="stat-bars__bar -outer" style="--outer-width:40%;"></div>
+        </div>
+        <div class="stat-bars--away">
+        <div class="stat-bars__bar -inner" style="--inner-width:36%;"></div>
+        <div class="stat-bars__bar -outer" style="--outer-width:64%;"></div>
+        </div>
+        </div>
+        <div data-statistic-row="shotsTotal" class="stat__row">
+            {% for stat in match_details.statistics %}
+            {% if stat.type == 'Shots Total' %}
+            <div class="stat__score ">{{ stat.home }}</div>
+            {% endif %}
+            {% endfor %} 
+        <div class="stat__title">Total shots</div>
+            {% for stat in match_details.statistics %}
+            {% if stat.type == 'Shots Total' %}
+            <div class="stat__score ">{{ stat.away }}</div>
+            {% endif %}
+            {% endfor %} 
+        </div>
+        <div data-statistic-row="shotsBlocked" class="stat__row">
+            {% for stat in match_details.statistics %}
+            {% if stat.type == 'Shots Blocked' %}
+            <div class="stat__score ">{{ stat.home }}</div>
+            {% endif %}
+            {% endfor %} 
+        <div class="stat__title">Blocked shots</div>
+            {% for stat in match_details.statistics %}
+            {% if stat.type == 'Shots Blocked' %}
+            <div class="stat__score ">{{ stat.away }}</div>
+            {% endif %}
+            {% endfor %} 
+        </div>
+        <div data-statistic-row="shotsSaved" class="stat__row">
+            {% for stat in match_details.statistics %}
+            {% if stat.type == 'Saves' %}
+            <div class="stat__score ">{{ stat.home }}</div>
+            {% endif %}
+            {% endfor %} 
+        <div class="stat__title">Saves</div>
+        {% for stat in match_details.statistics %}
+        {% if stat.type == 'Saves' %}
+        <div class="stat__score ">{{ stat.away }}</div>
+        {% endif %}
+        {% endfor %} 
+        </div>
+        </div>
+        </div>
+            <div data-tab-id="pre-match-stats hidden" class="stat-tab ">
+            <div class="stat-list">
+            <div class="stat__row" data-statistic-row="position">
+            <div class="stat__score -active">14</div>
+            <div class="stat__title">Position</div>
+            <div class="stat__score ">7</div>
+            </div>
+            <div class="stat__row" data-statistic-row="winCount">
+            <div class="stat__score ">10</div>
+            <div class="stat__title">Win</div>
+            <div class="stat__score -active">21</div>
+            </div>
+            <div class="stat__row" data-statistic-row="drawCount">
+            <div class="stat__score -active">12</div>
+            <div class="stat__title">Draw</div>
+            <div class="stat__score ">6</div>
+            </div>
+            <div class="stat__row" data-statistic-row="loseCount">
+            <div class="stat__score -active">14</div>
+            <div class="stat__title">Lose</div>
+            <div class="stat__score ">9</div>
+            </div>
+            <div class="stat__row" data-statistic-row="scoredGoals">
+            <div class="stat__score ">36</div>
+            <div class="stat__title">Scored goals</div>
+            <div class="stat__score -active">55</div>
+            </div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="btn__holder hidden">
+        <a href="/football/stats/empoli-fc-juventus-turin-2023-05-21" class="btn btn--full-width btn--type-ghost-arrow btn--size-xs">
+        <span class="btn__text">Full Stats</span>
+        <span class="btn__arrow"></span>
+        </a>
+        </div>
+
+        <div class="headers hidden">
+        <div class="headers__title">Current Form</div>
+        <div class="headers__sub-title">Last 5 matches</div>
+        </div>
+        <div class="pregame hidden">
+        <div class="pregame__item">
+        <a href="/football/team/empoli-cf">
+        <img class="lazy img img--size-xl" width="64" height="64" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMy4xMzQgOS41NDd2MTAuMDVjLjgxLS41MzIgMS41Ni0xLjE5NCAyLjIyNi0xLjk4M2wuMDUyLS4wNjJWOS41NDdoLTIuMjc4em0tOC4zOS0xLjE1NGwuMDMuMTloMTQuNDEzbC4wMzQtLjE4NGEzMS41NyAzMS41NyAwIDAwLjQ3LTQuMDY2bC4wMDctLjE2OC0uMTU5LS4wNTRjLS45MzMtLjMxOC0zLjUyNC0xLjA2NS03LjQzLTEuMTQzYTI2Ljc3OSAyNi43NzkgMCAwMC0uNDQtLjAwNGMtMy40NDcgMC02LjA5Ny44MDUtNy4wNzYgMS4xNTFsLS4xNS4wNTR2LjE1N2MwIDEuNDAzLjEwMSAyLjc3MS4zMDEgNC4wNjd6bTQuMTEgOS4yMWMuODE3LjkwNSAxLjU4OSAxLjUyMyAyLjE2MyAxLjkyN1Y5LjU0N0g4Ljc5NnY3Ljk5MmwuMDU4LjA2NHptLTEuNDQyLTEuODg0bC40MTQuNjRWOS41NDdINC45NDhsLjA2LjI3MmMuNDkgMi4yMDYgMS4yOTggNC4xOTEgMi40MDQgNS45em05LjM5Mi0uMmMuOTAxLTEuNTk3IDEuNjE1LTMuNTEzIDIuMTIyLTUuNjk4bC4wNjQtLjI3NGgtMi42MDd2Ni43MTdsLjQyLS43NDV6TTIwLjY3NyAzLjg0Yy0uMDAxLjEzOC0uMDI4IDMuNDMyLTEuMDQyIDcuMTg3LTEuMzY4IDUuMDY2LTMuOTAzIDguNTc0LTcuMzMxIDEwLjE0NWwtLjE5OS4wOTEtLjItLjA4N2MtLjM1Mi0uMTU0LTguNjQxLTMuOTI2LTguNDI3LTE3LjM0NWwuMDA1LS4zMTIuMjg3LS4xMjNDMy44MDMgMy4zODIgNy4wNjQgMiAxMS43MDIgMmMuMTQyIDAgLjI4NC4wMDEuNDI3LjAwNCA1LjI0OC4xMDQgOC4xMzYgMS4zNCA4LjI1NyAxLjM5M2wuMjkxLjEyN3YuMzE2em0xLjI5OCA4LjI1NmMuMDQzLjU3NS4wNiAxLjU1Ni0uMiAyLjQyMy0uMzE2IDEuMDU3LTEuNjY1IDEuODQ3LTIuMTk2IDIuMTIzQTYuNTgzIDYuNTgzIDAgMDEyMSAxNi4yOWEuMzMuMzMgMCAwMS4zNjIuNDI2Yy0uMTc3LjU0OC0uNTMgMS40NjYtMS4wOTggMi4xNzYtLjM1NS40NDMtLjkzNS43Mi0xLjQ5Ni44OTNsLS4wMjUtLjAwNWMuMjMyLjA3Ni40NC4xNTkuNjEuMjMxLjIyNC4wOTcuMjcxLjM5LjA4Ny41NS0uNDM4LjM3OS0xLjIyMi45ODItMi4wOCAxLjI5Ni0xLjYyOC4zNzQtMi4yNjUtLjA0Ny0yLjkwOC0uNjE4LjMyLS4zMS42MjYtLjY0LjkyMi0uOTg4YTUuNjQ2IDUuNjQ2IDAgMDExLjE2MS0uNjA3Yy4yNTEtLjA5Mi41MjYtLjEyNy44MDctLjEyNC4wNjEtLjE5My4xNDItLjQyMi4yNDQtLjY2OS0uMDU1LS4xMi0uMTEtLjIwMi0uMTY0LS4yODNhMS41MzUgMS41MzUgMCAwMS0uMjQ2LS41MmMuNTgzLTEuMDIxIDEuMTgtMi4yMTkgMS42MjItMy40NC4yMDguNDM3LjM3Mi44MDIuNDk2IDEuNDktLjAzOS0uNTgtLjA0LTEuNDU3LjE5Ny0yLjI0OC4yNzgtLjkzIDEuMzY2LTEuNjYzIDEuOTg4LTIuMDE2LjIxMi0uMTIuNDc4LjAyLjQ5Ni4yNnptLTEzLjU0NyA4LjAzYTUuNDA5IDUuNDA5IDAgMDAtLjk2My0uNDggMi4yNjUgMi4yNjUgMCAwMC0uODA3LS4xMjUgOC41NTggOC41NTggMCAwMC0uMjQ0LS42NjljLjExNS0uMjU0LjI0My0uNTcuMzU0LS45MTdsLS4wMjEtLjAzM2MtLjU5LS45MTUtMS4yMDgtMS44NzUtMS42OTctMy4wNjMtLjE2LjM4OC0uMjU2Ljc3LS4zNDQgMS4yNi4wMzktLjU4LjA0LTEuNDU3LS4xOTYtMi4yNDgtLjI3OS0uOTMtMS4zNjctMS42NjItMS45OS0yLjAxNmEuMzMyLjMzMiAwIDAwLS40OTUuMjZjLS4wNDMuNTc2LS4wNiAxLjU1Ny4yIDIuNDI0LjMxNiAxLjA1OCAxLjY2NSAxLjg0NyAyLjE5NiAyLjEyM0E2LjUzNCA2LjUzNCAwIDAwMyAxNi4yOTFhLjMzLjMzIDAgMDAtLjM2Mi40MjVjLjE3Ny41NDguNTMgMS40NjYgMS4wOTkgMi4xNzYuMzU0LjQ0My45MzQuNzIgMS40OTUuODkzbC4wMjUtLjAwNWE3Ljk4IDcuOTggMCAwMC0uNjEuMjMxLjMyOC4zMjggMCAwMC0uMDg3LjU1Yy40MzguMzc5IDEuMjIyLjk4MiAyLjA3OSAxLjI5NiAxLjYxMi4zNyAyLjI1My0uMDM5IDIuODktLjZhMTYuODkzIDE2Ljg5MyAwIDAxLTEuMS0xLjEzM3pNMTIuNjA3IDUuMDhsMS4wNDMuMDg5Yy4xOS4wMTQuMjY3LjI1MS4xMjMuMzc2bC0uNzkyLjY4NC4yMzcgMS4wMTRhLjIxNS4yMTUgMCAwMS0uMzIyLjIzMkwxMiA2LjkzNmwtLjg5Ni41MzhhLjIxNS4yMTUgMCAwMS0uMzIyLS4yMzNsLjIzOC0xLjAxNS0uNzkzLS42ODNhLjIxNC4yMTQgMCAwMS4xMjMtLjM3NmwxLjA0My0uMDg5LjQwOC0uOTU3YS4yMTYuMjE2IDAgMDEuMzk3IDBsLjQwOS45NnptLTMuOTM2LjkyMWwtLjYzNi0uMDUyLS4yNS0uNTc2Yy0uMDQ0LS4xMDQtLjE5Ny0uMTA0LS4yNDIgMGwtLjI0OS41NzVMNi42NTggNmEuMTI4LjEyOCAwIDAwLS4wNzUuMjI2bC40ODMuNDEtLjE0NS42MDljLS4wMjYuMTExLjA5Ny4xOTkuMTk3LjE0bC41NDYtLjMyMy41NDcuMzI0Yy4xLjA1OS4yMjMtLjAyOS4xOTctLjE0bC0uMTQ1LS42MDguNDgzLS40MTFjLjA4OS0uMDc1LjA0MS0uMjE2LS4wNzUtLjIyNnptOC4wMzUtLjA1MmwuNjM2LjA1MmMuMTE2LjAxLjE2My4xNTEuMDc2LjIyNmwtLjQ4NC40MS4xNDQuNjFjLjAyNy4xMS0uMDk1LjE5OC0uMTk1LjE0bC0uNTQ3LS4zMjUtLjU0Ny4zMjNjLS4xLjA1OS0uMjIzLS4wMjktLjE5Ny0uMTRsLjE0Ni0uNjA4LS40ODQtLjQxMWMtLjA4OS0uMDc1LS4wNDEtLjIxNy4wNzUtLjIyNmwuNjM2LS4wNTIuMjUtLjU3NWMuMDQ0LS4xMDQuMTk3LS4xMDQuMjQyIDBsLjI0OS41NzZ6IiBmaWxsPSIjQTJBREI4Ii8+PC9zdmc+Cg==" data-src="https://sportcdns.live/resized/128/128/team/47cf18816f2cb547592428d03f702d9cd5ef791698331d6c74bc00fc0f418aaa.png" alt="Empoli" loading="lazy">
+        </a>
+        <a href="/football/team/empoli-cf" class="list-title list-title--black list-title--dots list-title--size-14 list-title--bold">Empoli</a>
+        <ul class="pregame__cards">
+        <li class="pregame__icon pregame__icon--win"></li>
+        <li class="pregame__icon pregame__icon--draw"></li>
+        <li class="pregame__icon pregame__icon--win"></li>
+        <li class="pregame__icon pregame__icon--win"></li>
+        <li class="pregame__icon pregame__icon--lose"></li>
+        </ul>
+        </div>
+        <div class="pregame__item">
+        <a href="/football/team/juventus-cf">
+        <img class="lazy img img--size-xl" width="64" height="64" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMy4xMzQgOS41NDd2MTAuMDVjLjgxLS41MzIgMS41Ni0xLjE5NCAyLjIyNi0xLjk4M2wuMDUyLS4wNjJWOS41NDdoLTIuMjc4em0tOC4zOS0xLjE1NGwuMDMuMTloMTQuNDEzbC4wMzQtLjE4NGEzMS41NyAzMS41NyAwIDAwLjQ3LTQuMDY2bC4wMDctLjE2OC0uMTU5LS4wNTRjLS45MzMtLjMxOC0zLjUyNC0xLjA2NS03LjQzLTEuMTQzYTI2Ljc3OSAyNi43NzkgMCAwMC0uNDQtLjAwNGMtMy40NDcgMC02LjA5Ny44MDUtNy4wNzYgMS4xNTFsLS4xNS4wNTR2LjE1N2MwIDEuNDAzLjEwMSAyLjc3MS4zMDEgNC4wNjd6bTQuMTEgOS4yMWMuODE3LjkwNSAxLjU4OSAxLjUyMyAyLjE2MyAxLjkyN1Y5LjU0N0g4Ljc5NnY3Ljk5MmwuMDU4LjA2NHptLTEuNDQyLTEuODg0bC40MTQuNjRWOS41NDdINC45NDhsLjA2LjI3MmMuNDkgMi4yMDYgMS4yOTggNC4xOTEgMi40MDQgNS45em05LjM5Mi0uMmMuOTAxLTEuNTk3IDEuNjE1LTMuNTEzIDIuMTIyLTUuNjk4bC4wNjQtLjI3NGgtMi42MDd2Ni43MTdsLjQyLS43NDV6TTIwLjY3NyAzLjg0Yy0uMDAxLjEzOC0uMDI4IDMuNDMyLTEuMDQyIDcuMTg3LTEuMzY4IDUuMDY2LTMuOTAzIDguNTc0LTcuMzMxIDEwLjE0NWwtLjE5OS4wOTEtLjItLjA4N2MtLjM1Mi0uMTU0LTguNjQxLTMuOTI2LTguNDI3LTE3LjM0NWwuMDA1LS4zMTIuMjg3LS4xMjNDMy44MDMgMy4zODIgNy4wNjQgMiAxMS43MDIgMmMuMTQyIDAgLjI4NC4wMDEuNDI3LjAwNCA1LjI0OC4xMDQgOC4xMzYgMS4zNCA4LjI1NyAxLjM5M2wuMjkxLjEyN3YuMzE2em0xLjI5OCA4LjI1NmMuMDQzLjU3NS4wNiAxLjU1Ni0uMiAyLjQyMy0uMzE2IDEuMDU3LTEuNjY1IDEuODQ3LTIuMTk2IDIuMTIzQTYuNTgzIDYuNTgzIDAgMDEyMSAxNi4yOWEuMzMuMzMgMCAwMS4zNjIuNDI2Yy0uMTc3LjU0OC0uNTMgMS40NjYtMS4wOTggMi4xNzYtLjM1NS40NDMtLjkzNS43Mi0xLjQ5Ni44OTNsLS4wMjUtLjAwNWMuMjMyLjA3Ni40NC4xNTkuNjEuMjMxLjIyNC4wOTcuMjcxLjM5LjA4Ny41NS0uNDM4LjM3OS0xLjIyMi45ODItMi4wOCAxLjI5Ni0xLjYyOC4zNzQtMi4yNjUtLjA0Ny0yLjkwOC0uNjE4LjMyLS4zMS42MjYtLjY0LjkyMi0uOTg4YTUuNjQ2IDUuNjQ2IDAgMDExLjE2MS0uNjA3Yy4yNTEtLjA5Mi41MjYtLjEyNy44MDctLjEyNC4wNjEtLjE5My4xNDItLjQyMi4yNDQtLjY2OS0uMDU1LS4xMi0uMTEtLjIwMi0uMTY0LS4yODNhMS41MzUgMS41MzUgMCAwMS0uMjQ2LS41MmMuNTgzLTEuMDIxIDEuMTgtMi4yMTkgMS42MjItMy40NC4yMDguNDM3LjM3Mi44MDIuNDk2IDEuNDktLjAzOS0uNTgtLjA0LTEuNDU3LjE5Ny0yLjI0OC4yNzgtLjkzIDEuMzY2LTEuNjYzIDEuOTg4LTIuMDE2LjIxMi0uMTIuNDc4LjAyLjQ5Ni4yNnptLTEzLjU0NyA4LjAzYTUuNDA5IDUuNDA5IDAgMDAtLjk2My0uNDggMi4yNjUgMi4yNjUgMCAwMC0uODA3LS4xMjUgOC41NTggOC41NTggMCAwMC0uMjQ0LS42NjljLjExNS0uMjU0LjI0My0uNTcuMzU0LS45MTdsLS4wMjEtLjAzM2MtLjU5LS45MTUtMS4yMDgtMS44NzUtMS42OTctMy4wNjMtLjE2LjM4OC0uMjU2Ljc3LS4zNDQgMS4yNi4wMzktLjU4LjA0LTEuNDU3LS4xOTYtMi4yNDgtLjI3OS0uOTMtMS4zNjctMS42NjItMS45OS0yLjAxNmEuMzMyLjMzMiAwIDAwLS40OTUuMjZjLS4wNDMuNTc2LS4wNiAxLjU1Ny4yIDIuNDI0LjMxNiAxLjA1OCAxLjY2NSAxLjg0NyAyLjE5NiAyLjEyM0E2LjUzNCA2LjUzNCAwIDAwMyAxNi4yOTFhLjMzLjMzIDAgMDAtLjM2Mi40MjVjLjE3Ny41NDguNTMgMS40NjYgMS4wOTkgMi4xNzYuMzU0LjQ0My45MzQuNzIgMS40OTUuODkzbC4wMjUtLjAwNWE3Ljk4IDcuOTggMCAwMC0uNjEuMjMxLjMyOC4zMjggMCAwMC0uMDg3LjU1Yy40MzguMzc5IDEuMjIyLjk4MiAyLjA3OSAxLjI5NiAxLjYxMi4zNyAyLjI1My0uMDM5IDIuODktLjZhMTYuODkzIDE2Ljg5MyAwIDAxLTEuMS0xLjEzM3pNMTIuNjA3IDUuMDhsMS4wNDMuMDg5Yy4xOS4wMTQuMjY3LjI1MS4xMjMuMzc2bC0uNzkyLjY4NC4yMzcgMS4wMTRhLjIxNS4yMTUgMCAwMS0uMzIyLjIzMkwxMiA2LjkzNmwtLjg5Ni41MzhhLjIxNS4yMTUgMCAwMS0uMzIyLS4yMzNsLjIzOC0xLjAxNS0uNzkzLS42ODNhLjIxNC4yMTQgMCAwMS4xMjMtLjM3NmwxLjA0My0uMDg5LjQwOC0uOTU3YS4yMTYuMjE2IDAgMDEuMzk3IDBsLjQwOS45NnptLTMuOTM2LjkyMWwtLjYzNi0uMDUyLS4yNS0uNTc2Yy0uMDQ0LS4xMDQtLjE5Ny0uMTA0LS4yNDIgMGwtLjI0OS41NzVMNi42NTggNmEuMTI4LjEyOCAwIDAwLS4wNzUuMjI2bC40ODMuNDEtLjE0NS42MDljLS4wMjYuMTExLjA5Ny4xOTkuMTk3LjE0bC41NDYtLjMyMy41NDcuMzI0Yy4xLjA1OS4yMjMtLjAyOS4xOTctLjE0bC0uMTQ1LS42MDguNDgzLS40MTFjLjA4OS0uMDc1LjA0MS0uMjE2LS4wNzUtLjIyNnptOC4wMzUtLjA1MmwuNjM2LjA1MmMuMTE2LjAxLjE2My4xNTEuMDc2LjIyNmwtLjQ4NC40MS4xNDQuNjFjLjAyNy4xMS0uMDk1LjE5OC0uMTk1LjE0bC0uNTQ3LS4zMjUtLjU0Ny4zMjNjLS4xLjA1OS0uMjIzLS4wMjktLjE5Ny0uMTRsLjE0Ni0uNjA4LS40ODQtLjQxMWMtLjA4OS0uMDc1LS4wNDEtLjIxNy4wNzUtLjIyNmwuNjM2LS4wNTIuMjUtLjU3NWMuMDQ0LS4xMDQuMTk3LS4xMDQuMjQyIDBsLjI0OS41NzZ6IiBmaWxsPSIjQTJBREI4Ii8+PC9zdmc+Cg==" data-src="https://sportcdns.live/resized/128/128/team/c00919d65d4a774a3d3ea753cd238f936ef2231b30751b82efc85cfcbbac4e58.png" alt="Juventus" loading="lazy">
+        </a>
+        <a href="/football/team/juventus-cf" class="list-title list-title--black list-title--dots list-title--size-14 list-title--bold">Juventus</a>
+        <ul class="pregame__cards">
+        <li class="pregame__icon pregame__icon--lose"></li>
+        <li class="pregame__icon pregame__icon--lose"></li>
+        <li class="pregame__icon pregame__icon--win"></li>
+        <li class="pregame__icon pregame__icon--draw"></li>
+        <li class="pregame__icon pregame__icon--win"></li>
+        </ul>
+        </div>
+        </div>
+        <div class="btn__holder hidden ">
+        <a href="/football/h2h/empoli-fc-juventus-turin-2023-05-21" class="btn btn--full-width btn--type-ghost-arrow btn--size-xs">
+        <span class="btn__text">More H2H</span>
+        <span class="btn__arrow"></span>
+        </a>
+        </div>
+        <div class="tab line-up__tab hidden">
+        <div class="tab-header hidden">
+        <a href="/football/team/empoli-cf" data-host="true" class="tab-header-team">
+        <img class="lazy " width="24" height="24" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMy4xMzQgOS41NDd2MTAuMDVjLjgxLS41MzIgMS41Ni0xLjE5NCAyLjIyNi0xLjk4M2wuMDUyLS4wNjJWOS41NDdoLTIuMjc4em0tOC4zOS0xLjE1NGwuMDMuMTloMTQuNDEzbC4wMzQtLjE4NGEzMS41NyAzMS41NyAwIDAwLjQ3LTQuMDY2bC4wMDctLjE2OC0uMTU5LS4wNTRjLS45MzMtLjMxOC0zLjUyNC0xLjA2NS03LjQzLTEuMTQzYTI2Ljc3OSAyNi43NzkgMCAwMC0uNDQtLjAwNGMtMy40NDcgMC02LjA5Ny44MDUtNy4wNzYgMS4xNTFsLS4xNS4wNTR2LjE1N2MwIDEuNDAzLjEwMSAyLjc3MS4zMDEgNC4wNjd6bTQuMTEgOS4yMWMuODE3LjkwNSAxLjU4OSAxLjUyMyAyLjE2MyAxLjkyN1Y5LjU0N0g4Ljc5NnY3Ljk5MmwuMDU4LjA2NHptLTEuNDQyLTEuODg0bC40MTQuNjRWOS41NDdINC45NDhsLjA2LjI3MmMuNDkgMi4yMDYgMS4yOTggNC4xOTEgMi40MDQgNS45em05LjM5Mi0uMmMuOTAxLTEuNTk3IDEuNjE1LTMuNTEzIDIuMTIyLTUuNjk4bC4wNjQtLjI3NGgtMi42MDd2Ni43MTdsLjQyLS43NDV6TTIwLjY3NyAzLjg0Yy0uMDAxLjEzOC0uMDI4IDMuNDMyLTEuMDQyIDcuMTg3LTEuMzY4IDUuMDY2LTMuOTAzIDguNTc0LTcuMzMxIDEwLjE0NWwtLjE5OS4wOTEtLjItLjA4N2MtLjM1Mi0uMTU0LTguNjQxLTMuOTI2LTguNDI3LTE3LjM0NWwuMDA1LS4zMTIuMjg3LS4xMjNDMy44MDMgMy4zODIgNy4wNjQgMiAxMS43MDIgMmMuMTQyIDAgLjI4NC4wMDEuNDI3LjAwNCA1LjI0OC4xMDQgOC4xMzYgMS4zNCA4LjI1NyAxLjM5M2wuMjkxLjEyN3YuMzE2em0xLjI5OCA4LjI1NmMuMDQzLjU3NS4wNiAxLjU1Ni0uMiAyLjQyMy0uMzE2IDEuMDU3LTEuNjY1IDEuODQ3LTIuMTk2IDIuMTIzQTYuNTgzIDYuNTgzIDAgMDEyMSAxNi4yOWEuMzMuMzMgMCAwMS4zNjIuNDI2Yy0uMTc3LjU0OC0uNTMgMS40NjYtMS4wOTggMi4xNzYtLjM1NS40NDMtLjkzNS43Mi0xLjQ5Ni44OTNsLS4wMjUtLjAwNWMuMjMyLjA3Ni40NC4xNTkuNjEuMjMxLjIyNC4wOTcuMjcxLjM5LjA4Ny41NS0uNDM4LjM3OS0xLjIyMi45ODItMi4wOCAxLjI5Ni0xLjYyOC4zNzQtMi4yNjUtLjA0Ny0yLjkwOC0uNjE4LjMyLS4zMS42MjYtLjY0LjkyMi0uOTg4YTUuNjQ2IDUuNjQ2IDAgMDExLjE2MS0uNjA3Yy4yNTEtLjA5Mi41MjYtLjEyNy44MDctLjEyNC4wNjEtLjE5My4xNDItLjQyMi4yNDQtLjY2OS0uMDU1LS4xMi0uMTEtLjIwMi0uMTY0LS4yODNhMS41MzUgMS41MzUgMCAwMS0uMjQ2LS41MmMuNTgzLTEuMDIxIDEuMTgtMi4yMTkgMS42MjItMy40NC4yMDguNDM3LjM3Mi44MDIuNDk2IDEuNDktLjAzOS0uNTgtLjA0LTEuNDU3LjE5Ny0yLjI0OC4yNzgtLjkzIDEuMzY2LTEuNjYzIDEuOTg4LTIuMDE2LjIxMi0uMTIuNDc4LjAyLjQ5Ni4yNnptLTEzLjU0NyA4LjAzYTUuNDA5IDUuNDA5IDAgMDAtLjk2My0uNDggMi4yNjUgMi4yNjUgMCAwMC0uODA3LS4xMjUgOC41NTggOC41NTggMCAwMC0uMjQ0LS42NjljLjExNS0uMjU0LjI0My0uNTcuMzU0LS45MTdsLS4wMjEtLjAzM2MtLjU5LS45MTUtMS4yMDgtMS44NzUtMS42OTctMy4wNjMtLjE2LjM4OC0uMjU2Ljc3LS4zNDQgMS4yNi4wMzktLjU4LjA0LTEuNDU3LS4xOTYtMi4yNDgtLjI3OS0uOTMtMS4zNjctMS42NjItMS45OS0yLjAxNmEuMzMyLjMzMiAwIDAwLS40OTUuMjZjLS4wNDMuNTc2LS4wNiAxLjU1Ny4yIDIuNDI0LjMxNiAxLjA1OCAxLjY2NSAxLjg0NyAyLjE5NiAyLjEyM0E2LjUzNCA2LjUzNCAwIDAwMyAxNi4yOTFhLjMzLjMzIDAgMDAtLjM2Mi40MjVjLjE3Ny41NDguNTMgMS40NjYgMS4wOTkgMi4xNzYuMzU0LjQ0My45MzQuNzIgMS40OTUuODkzbC4wMjUtLjAwNWE3Ljk4IDcuOTggMCAwMC0uNjEuMjMxLjMyOC4zMjggMCAwMC0uMDg3LjU1Yy40MzguMzc5IDEuMjIyLjk4MiAyLjA3OSAxLjI5NiAxLjYxMi4zNyAyLjI1My0uMDM5IDIuODktLjZhMTYuODkzIDE2Ljg5MyAwIDAxLTEuMS0xLjEzM3pNMTIuNjA3IDUuMDhsMS4wNDMuMDg5Yy4xOS4wMTQuMjY3LjI1MS4xMjMuMzc2bC0uNzkyLjY4NC4yMzcgMS4wMTRhLjIxNS4yMTUgMCAwMS0uMzIyLjIzMkwxMiA2LjkzNmwtLjg5Ni41MzhhLjIxNS4yMTUgMCAwMS0uMzIyLS4yMzNsLjIzOC0xLjAxNS0uNzkzLS42ODNhLjIxNC4yMTQgMCAwMS4xMjMtLjM3NmwxLjA0My0uMDg5LjQwOC0uOTU3YS4yMTYuMjE2IDAgMDEuMzk3IDBsLjQwOS45NnptLTMuOTM2LjkyMWwtLjYzNi0uMDUyLS4yNS0uNTc2Yy0uMDQ0LS4xMDQtLjE5Ny0uMTA0LS4yNDIgMGwtLjI0OS41NzVMNi42NTggNmEuMTI4LjEyOCAwIDAwLS4wNzUuMjI2bC40ODMuNDEtLjE0NS42MDljLS4wMjYuMTExLjA5Ny4xOTkuMTk3LjE0bC41NDYtLjMyMy41NDcuMzI0Yy4xLjA1OS4yMjMtLjAyOS4xOTctLjE0bC0uMTQ1LS42MDguNDgzLS40MTFjLjA4OS0uMDc1LjA0MS0uMjE2LS4wNzUtLjIyNnptOC4wMzUtLjA1MmwuNjM2LjA1MmMuMTE2LjAxLjE2My4xNTEuMDc2LjIyNmwtLjQ4NC40MS4xNDQuNjFjLjAyNy4xMS0uMDk1LjE5OC0uMTk1LjE0bC0uNTQ3LS4zMjUtLjU0Ny4zMjNjLS4xLjA1OS0uMjIzLS4wMjktLjE5Ny0uMTRsLjE0Ni0uNjA4LS40ODQtLjQxMWMtLjA4OS0uMDc1LS4wNDEtLjIxNy4wNzUtLjIyNmwuNjM2LS4wNTIuMjUtLjU3NWMuMDQ0LS4xMDQuMTk3LS4xMDQuMjQyIDBsLjI0OS41NzZ6IiBmaWxsPSIjQTJBREI4Ii8+PC9zdmc+Cg==" data-src="https://sportcdns.live/resized/48/48/team/47cf18816f2cb547592428d03f702d9cd5ef791698331d6c74bc00fc0f418aaa.png" alt="Empoli" loading="lazy">
+        <span class="tab-header-team__title">
+        EMP
+        </span>
+        </a>
+        <h3 class="tab-header-title">Starting</h3>
+        <a href="/football/team/juventus-cf" data-guest="true" class="tab-header-team">
+        <img class="lazy " width="24" height="24" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMy4xMzQgOS41NDd2MTAuMDVjLjgxLS41MzIgMS41Ni0xLjE5NCAyLjIyNi0xLjk4M2wuMDUyLS4wNjJWOS41NDdoLTIuMjc4em0tOC4zOS0xLjE1NGwuMDMuMTloMTQuNDEzbC4wMzQtLjE4NGEzMS41NyAzMS41NyAwIDAwLjQ3LTQuMDY2bC4wMDctLjE2OC0uMTU5LS4wNTRjLS45MzMtLjMxOC0zLjUyNC0xLjA2NS03LjQzLTEuMTQzYTI2Ljc3OSAyNi43NzkgMCAwMC0uNDQtLjAwNGMtMy40NDcgMC02LjA5Ny44MDUtNy4wNzYgMS4xNTFsLS4xNS4wNTR2LjE1N2MwIDEuNDAzLjEwMSAyLjc3MS4zMDEgNC4wNjd6bTQuMTEgOS4yMWMuODE3LjkwNSAxLjU4OSAxLjUyMyAyLjE2MyAxLjkyN1Y5LjU0N0g4Ljc5NnY3Ljk5MmwuMDU4LjA2NHptLTEuNDQyLTEuODg0bC40MTQuNjRWOS41NDdINC45NDhsLjA2LjI3MmMuNDkgMi4yMDYgMS4yOTggNC4xOTEgMi40MDQgNS45em05LjM5Mi0uMmMuOTAxLTEuNTk3IDEuNjE1LTMuNTEzIDIuMTIyLTUuNjk4bC4wNjQtLjI3NGgtMi42MDd2Ni43MTdsLjQyLS43NDV6TTIwLjY3NyAzLjg0Yy0uMDAxLjEzOC0uMDI4IDMuNDMyLTEuMDQyIDcuMTg3LTEuMzY4IDUuMDY2LTMuOTAzIDguNTc0LTcuMzMxIDEwLjE0NWwtLjE5OS4wOTEtLjItLjA4N2MtLjM1Mi0uMTU0LTguNjQxLTMuOTI2LTguNDI3LTE3LjM0NWwuMDA1LS4zMTIuMjg3LS4xMjNDMy44MDMgMy4zODIgNy4wNjQgMiAxMS43MDIgMmMuMTQyIDAgLjI4NC4wMDEuNDI3LjAwNCA1LjI0OC4xMDQgOC4xMzYgMS4zNCA4LjI1NyAxLjM5M2wuMjkxLjEyN3YuMzE2em0xLjI5OCA4LjI1NmMuMDQzLjU3NS4wNiAxLjU1Ni0uMiAyLjQyMy0uMzE2IDEuMDU3LTEuNjY1IDEuODQ3LTIuMTk2IDIuMTIzQTYuNTgzIDYuNTgzIDAgMDEyMSAxNi4yOWEuMzMuMzMgMCAwMS4zNjIuNDI2Yy0uMTc3LjU0OC0uNTMgMS40NjYtMS4wOTggMi4xNzYtLjM1NS40NDMtLjkzNS43Mi0xLjQ5Ni44OTNsLS4wMjUtLjAwNWMuMjMyLjA3Ni40NC4xNTkuNjEuMjMxLjIyNC4wOTcuMjcxLjM5LjA4Ny41NS0uNDM4LjM3OS0xLjIyMi45ODItMi4wOCAxLjI5Ni0xLjYyOC4zNzQtMi4yNjUtLjA0Ny0yLjkwOC0uNjE4LjMyLS4zMS42MjYtLjY0LjkyMi0uOTg4YTUuNjQ2IDUuNjQ2IDAgMDExLjE2MS0uNjA3Yy4yNTEtLjA5Mi41MjYtLjEyNy44MDctLjEyNC4wNjEtLjE5My4xNDItLjQyMi4yNDQtLjY2OS0uMDU1LS4xMi0uMTEtLjIwMi0uMTY0LS4yODNhMS41MzUgMS41MzUgMCAwMS0uMjQ2LS41MmMuNTgzLTEuMDIxIDEuMTgtMi4yMTkgMS42MjItMy40NC4yMDguNDM3LjM3Mi44MDIuNDk2IDEuNDktLjAzOS0uNTgtLjA0LTEuNDU3LjE5Ny0yLjI0OC4yNzgtLjkzIDEuMzY2LTEuNjYzIDEuOTg4LTIuMDE2LjIxMi0uMTIuNDc4LjAyLjQ5Ni4yNnptLTEzLjU0NyA4LjAzYTUuNDA5IDUuNDA5IDAgMDAtLjk2My0uNDggMi4yNjUgMi4yNjUgMCAwMC0uODA3LS4xMjUgOC41NTggOC41NTggMCAwMC0uMjQ0LS42NjljLjExNS0uMjU0LjI0My0uNTcuMzU0LS45MTdsLS4wMjEtLjAzM2MtLjU5LS45MTUtMS4yMDgtMS44NzUtMS42OTctMy4wNjMtLjE2LjM4OC0uMjU2Ljc3LS4zNDQgMS4yNi4wMzktLjU4LjA0LTEuNDU3LS4xOTYtMi4yNDgtLjI3OS0uOTMtMS4zNjctMS42NjItMS45OS0yLjAxNmEuMzMyLjMzMiAwIDAwLS40OTUuMjZjLS4wNDMuNTc2LS4wNiAxLjU1Ny4yIDIuNDI0LjMxNiAxLjA1OCAxLjY2NSAxLjg0NyAyLjE5NiAyLjEyM0E2LjUzNCA2LjUzNCAwIDAwMyAxNi4yOTFhLjMzLjMzIDAgMDAtLjM2Mi40MjVjLjE3Ny41NDguNTMgMS40NjYgMS4wOTkgMi4xNzYuMzU0LjQ0My45MzQuNzIgMS40OTUuODkzbC4wMjUtLjAwNWE3Ljk4IDcuOTggMCAwMC0uNjEuMjMxLjMyOC4zMjggMCAwMC0uMDg3LjU1Yy40MzguMzc5IDEuMjIyLjk4MiAyLjA3OSAxLjI5NiAxLjYxMi4zNyAyLjI1My0uMDM5IDIuODktLjZhMTYuODkzIDE2Ljg5MyAwIDAxLTEuMS0xLjEzM3pNMTIuNjA3IDUuMDhsMS4wNDMuMDg5Yy4xOS4wMTQuMjY3LjI1MS4xMjMuMzc2bC0uNzkyLjY4NC4yMzcgMS4wMTRhLjIxNS4yMTUgMCAwMS0uMzIyLjIzMkwxMiA2LjkzNmwtLjg5Ni41MzhhLjIxNS4yMTUgMCAwMS0uMzIyLS4yMzNsLjIzOC0xLjAxNS0uNzkzLS42ODNhLjIxNC4yMTQgMCAwMS4xMjMtLjM3NmwxLjA0My0uMDg5LjQwOC0uOTU3YS4yMTYuMjE2IDAgMDEuMzk3IDBsLjQwOS45NnptLTMuOTM2LjkyMWwtLjYzNi0uMDUyLS4yNS0uNTc2Yy0uMDQ0LS4xMDQtLjE5Ny0uMTA0LS4yNDIgMGwtLjI0OS41NzVMNi42NTggNmEuMTI4LjEyOCAwIDAwLS4wNzUuMjI2bC40ODMuNDEtLjE0NS42MDljLS4wMjYuMTExLjA5Ny4xOTkuMTk3LjE0bC41NDYtLjMyMy41NDcuMzI0Yy4xLjA1OS4yMjMtLjAyOS4xOTctLjE0bC0uMTQ1LS42MDguNDgzLS40MTFjLjA4OS0uMDc1LjA0MS0uMjE2LS4wNzUtLjIyNnptOC4wMzUtLjA1MmwuNjM2LjA1MmMuMTE2LjAxLjE2My4xNTEuMDc2LjIyNmwtLjQ4NC40MS4xNDQuNjFjLjAyNy4xMS0uMDk1LjE5OC0uMTk1LjE0bC0uNTQ3LS4zMjUtLjU0Ny4zMjNjLS4xLjA1OS0uMjIzLS4wMjktLjE5Ny0uMTRsLjE0Ni0uNjA4LS40ODQtLjQxMWMtLjA4OS0uMDc1LS4wNDEtLjIxNy4wNzUtLjIyNmwuNjM2LS4wNTIuMjUtLjU3NWMuMDQ0LS4xMDQuMTk3LS4xMDQuMjQyIDBsLjI0OS41NzZ6IiBmaWxsPSIjQTJBREI4Ii8+PC9zdmc+Cg==" data-src="https://sportcdns.live/resized/48/48/team/c00919d65d4a774a3d3ea753cd238f936ef2231b30751b82efc85cfcbbac4e58.png" alt="Juventus" loading="lazy">
+        <span class="span tab-header-team__title">
+        JUV
+        </span>
+        </a>
+        </div>
+        <div class="line-up hidden">
+        <div class="line-up__list">
+        <a href="/football/players/vicario-guglielmo" class="shift-list__item">
+        <span data-num="13" class="shift-list__name">
+        <span>Vicario G.</span>
+        </span>
+        <span class="shift-list__text">Goalkeeper</span>
+        </a>
+        <a href="/football/players/ebuehi-tyronne" class="shift-list__item">
+        <span data-num="24" class="shift-list__name">
+        <span>Ebuehi T.</span>
+        </span>
+        <span class="shift-list__text">Defender</span>
+        </a>
+        <a href="/football/players/ismajli-ardian" class="shift-list__item">
+        <span data-num="34" class="shift-list__name">
+        <span>Ismajli A.</span>
+        </span>
+        <span class="shift-list__text">Defender</span>
+        </a>
+        <a href="/football/players/luperto-sebastiano" class="shift-list__item">
+        <span data-num="33" class="shift-list__name">
+        <span>Luperto S.</span>
+        </span>
+        <span class="shift-list__text">Defender</span>
+        </a>
+        <a href="/football/players/parisi-fabiano" class="shift-list__item">
+        <span data-num="65" class="shift-list__name">
+        <span>Parisi F.</span>
+        </span>
+        <span class="shift-list__text">Defender</span>
+        </a>
+        </div>
+        <div class="line-up__list">
+        <a href="/football/players/szczesny-wojciech" class="shift-list__item">
+        <span data-num="1" class="shift-list__name">
+        <span>Szczesny W.</span>
+        </span>
+        <span class="shift-list__text">Goalkeeper</span>
+        </a>
+        <a href="/football/players/barbieri-tommaso" class="shift-list__item">
+        <span data-num="42" class="shift-list__name">
+        <span>Barbieri T.</span>
+        </span>
+        <span data-type="out" class="shift-list__time">46'</span>
+        <span class="shift-list__text">Chiesa F.</span>
+        </a>
+        <a href="/football/players/bremer" class="shift-list__item">
+        <span data-num="3" class="shift-list__name">
+        <span>Bremer</span>
+        </span>
+        <span class="shift-list__text">Defender</span>
+        </a>
+        <a href="/football/players/gatti-federico" class="shift-list__item">
+        <span data-num="15" class="shift-list__name">
+        <span>Gatti F.</span>
+        </span>
+        <span class="shift-list__text">Defender</span>
+        </a>
+        <a href="/football/players/sandro-alex" class="shift-list__item">
+        <span data-num="12" class="shift-list__name">
+        <span>Sandro A.</span>
+        </span>
+        <span data-type="out" class="shift-list__time">63'</span>
+        <span class="shift-list__text">Rugani D.</span>
+        </a>
+        </div>
+        </div>
+        </div>
+        <div class="btn__holder ">
+        <a href="/football/live-zone/empoli-fc-juventus-turin-2023-05-21" class="btn btn--full-width btn--type-ghost-arrow btn--size-xs">
+        <span class="btn__text">Full Line Up</span>
+        <span class="btn__arrow"></span>
+        </a>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+{% endfor %} 
+
+
+
+
+
+{% endblock content %}

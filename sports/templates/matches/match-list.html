@@ -1,0 +1,30 @@
+{% extends "sports/base.html" %}
+
+{% block content %}
+
+{% include 'sports/hero-slider.html' %}
+
+
+
+{% for result in jsonresponseuefa %}
+    <button  class="match-container" data-url="{% url 'match_details' result.country_name result.league_id result.match_id %}">
+        <span class="date">Match Date: {{result.match_date}}</span>
+        <div class="app">
+            <div class="match-header">                
+                <span class="team team-left">
+                    <img src="{{result.team_home_badge}}" alt="" class="team_icon">
+                    <span class="name">{{result.match_hometeam_name}}</span>
+                </span>
+                <span class="score">{{result.match_hometeam_ft_score}}-{{result.match_awayteam_ft_score}}</span>
+                <span class="team team-right">
+                    <img src="{{result.team_away_badge}}" alt="" class="team_icon">
+                    <span class="name">{{result.match_awayteam_name}}</span>
+                </span>
+            </div>
+            <div class="match_info">{{result.league_name}}</div>
+        </div>
+    </button>
+{% endfor %}
+
+
+{% endblock content %}

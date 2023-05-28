@@ -1,0 +1,121 @@
+{% extends 'sports/base.html' %}
+{% block content %}
+{% load blog_filters %}
+
+    <!-- Breadcrumb Section Start -->
+    {% comment %} <div class="section breadcrumb-section overlay" data-bg-image="assets/images/breadcrumb/portfolio.jpg"> {% endcomment %}
+        <div class="section breadcrumb-section overlay">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+
+                    <!-- Breadcrumb wrapper Start -->
+                    <div class="breadcrumb-wrapper">
+                        <h1 class="title text-white" data-aos="fade-up" data-aos-duration="1100"><h1>{{ category.name }}</h1></h1>
+
+                        <ul class="breadcrumb-menu" data-aos="fade-up" data-aos-duration="1500">
+                            <li>
+                                <a href="index.html">Home</a>
+                            </li>
+                            <li>
+                                <span>Blog Grid</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Breadcrumb wrapper End -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Blog Grid Section Start -->
+    <div class="section section-margin">
+        <div class="container">
+            <div class="row m-b-n30">
+                {% for blogpost in page_obj %}
+                <div class="col-lg-4 col-sm-6 m-b-30" data-aos="fade-up" data-aos-duration="1100">
+                    <!-- Single Blog Wrapper Start -->
+                    <div class="single-blog-wrapper">
+                        <div class="single-blog-thumb">
+                            {% if blogpost.feature_image %}
+                            <a class="image" href="blog-details.html"><img src="{{ blogpost.feature_image.url }}" alt="{{ blogpost.title }}"></a>
+                            {% endif %}
+                        </div>
+                        <div class="single-blog-content bg-color-gray">
+                            <div class="blog-meta">
+                                <span>By {{blogpost.author}}, {{blogpost.post_date}} / <a class="active" href="{% url 'category_archive' category_slug=blogpost.category.slug %}">{{ blogpost.category.name }}</a></span>
+                            </div>
+                            <h4 class="title"><a href="{% url 'post_detail' blogpost.slug %}">{{ blogpost.title }}</a></h4>
+                            <p>{{ blogpost.body|remove_headings|truncatechars_html:80|safe }}</p>
+                        </div>
+                    </div>
+                    <!-- Single Blog Wrapper End -->
+                </div>
+                {% endfor %}
+
+            </div>
+
+            <div class="row m-t-40 m-b-n10">
+                <div class="col-12" data-aos="fade-up" data-aos-duration="2000">
+                    <nav>
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li><a href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                            {% endif %}
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <li><a class="active" href="?page={{ num }}">{{ num }}</a></li>
+                                {% else %}
+                                    <li><a href="?page={{ num }}">{{ num }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <li><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Blog Grid Section End -->
+
+    <!-- Newsletter Section Start -->
+    <div class="section section-padding overlay" data-aos="fade-up" data-aos-duration="1100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+
+                    <!-- Newsletter wrapper Start -->
+                    <div class="newsletter-wrapper">
+                        <div class="newsletter-content">
+                            <p>Subscribe our <span class="text-color-primary">Newsletter</span> and <br> get update news and offers</p>
+                        </div>
+                        <!-- Newsletter Form Start -->
+                        <div class="newsletter-form-wrap p-t-40">
+                            <form id="mc-form" class="mc-form">
+                                <input type="email" id="mc-email" class="form-control email-box" placeholder="Enter your email here.." name="EMAIL">
+                                <button id="mc-submit" class="newsletter-btn" type="submit">Subscribe</button>
+                            </form>
+                            <!-- mailchimp-alerts Start -->
+                            <div class="mailchimp-alerts text-centre">
+                                <div class="mailchimp-submitting"></div><!-- mailchimp-submitting end -->
+                                <div class="mailchimp-success text-success"></div><!-- mailchimp-success end -->
+                                <div class="mailchimp-error text-danger"></div><!-- mailchimp-error end -->
+                            </div>
+                            <!-- mailchimp-alerts end -->
+                        </div>
+                        <!-- Newsletter Form End -->
+                    </div>
+                    <!-- Newsletter wrapper End -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Newsletter Section End -->
+
+
+{% endblock content %}

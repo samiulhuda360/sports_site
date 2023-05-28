@@ -1,0 +1,42 @@
+{% extends 'sports/base.html' %}
+{% block content %}
+
+<!-- Slider Section Start -->
+<div class="search slider-section">
+    <!-- Swiper Container Start -->
+    <div class="slider-container swiper-container animation-style-01">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <!-- Single Slider Start -->
+                <div class="slingle-slider overlay" data-bg-color="#000"></div>
+                <!-- Single Slider End -->
+            </div>
+        </div>
+    </div>
+    <!-- Swiper Container End -->
+</div>
+<!-- Slider Section End -->
+
+
+    <div class="container">
+        <h1>Search Results</h1>
+                {% for result in results %}
+                <!-- Single Blog Wrapper Start -->
+                <div class="card">
+                    <div class="card-image">
+                      {% if result.feature_image %}
+                      <a class="image" href="{% url 'post_detail' result.slug %}"><img src="{{ result.feature_image.url }}" alt="{{ result.title }}"></a>
+                      {% endif %}
+                    </div>
+                    <div class="card-content">
+                    <h2 class="title"><a href="{% url 'post_detail' result.slug %}">{{ result.title }}</a></h2>
+                    <p>{{ result.body|truncatechars_html:80|safe }}</p>                    </div>
+                  </div>                  
+                <!-- Single Blog Wrapper End -->
+                {% empty %}
+                <p>No results found.</p>
+                {% endfor %}
+    </div>
+
+
+{% endblock content %}

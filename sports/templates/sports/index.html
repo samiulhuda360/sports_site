@@ -1,0 +1,66 @@
+{% extends 'sports/base.html' %}
+{% block content %}
+
+
+{% include 'sports/hero-slider.html' %}
+
+    <!-- Blog Section Start -->
+    <div class="section section-margin-bottom">
+        <div class="container">
+            <div class="row m-b-n40 m-t-40">
+                <div class="col-lg-4 m-b-40 align-self-center" data-aos="fade-up" data-aos-duration="1100">
+                    <div class="about-content">
+                        <h2 class="title">Latest Blog <br> post</h2>
+                        <span></span>
+                        <p>Voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur mag ni dolores eos qui ratio ne voluptatem sequi nesciunt. Neque porro </p>
+                        <a href="blog-details.html" class="btn btn-dark btn-hover-primary m-t-20">Explore Now</a>
+                    </div>
+                </div>
+                {% for latest in blog_posts %}
+                <div class="col-lg-4 col-sm-6 m-b-40" data-aos="fade-up" data-aos-duration="1500">
+                    <!-- Single Blog Wrapper Start -->
+                    <div class="single-blog-wrapper blog-box">
+                        {% if latest.feature_image %}
+                        <div class="single-blog-thumb">
+                            <a class="image" href="{% url 'post_detail' latest.slug %}"><img src="{{latest.feature_image.url}}" alt="Blog Image"></a>
+                        </div>
+                        {% endif %}
+                        <div class="single-blog-content">
+                            <div class="blog-meta">
+                                <span>By {{latest.author}}, {{latest.post_date}} / <a class="active" href="blog-details.html">{{latest.category}}</a></span>
+                            </div>
+                            <h4 class="title"><a href="{% url 'post_detail' latest.slug %}">{{latest.title}}</a></h4>
+                            <p>{{ latest.body|truncatechars_html:50|safe }}</p>
+                        </div>
+                    </div>
+                    <!-- Single Blog Wrapper End -->
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- Blog Section End -->
+
+
+    <!-- Contact Banner section Start -->
+    <div class="section contact-banner-section">
+        <div class="contact-banner-wrapper" data-bg-image="assets/images/banner/contact-banner.jpg">
+            <!-- <img src="assets/images/banner/contact-banner.jpg" alt="Contact Banner Image"> -->
+        </div>
+        <div class="container-fluid contact-banner-container">
+            <div class="row">
+                <div class="col-md-12 col-lg-9">
+                    <div class="section-title m-b-20 pb-0" data-aos="fade-up" data-aos-duration="1100">
+                        <h2 class="title">Contact Us</h2>
+                        <span class="thick-border"></span>
+                        <p>Voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur mag ni dolores eos qui ratio ne voluptatem sequi nesciunt. Neque porro </p>
+                    </div>
+                    {% include 'sports/contact_form.html'%}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact Banner section End -->
+
+
+    {% endblock content %}

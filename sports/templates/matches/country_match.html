@@ -1,0 +1,43 @@
+{% extends "sports/base.html" %}
+
+{% block content %}
+
+{% include 'sports/hero-slider.html' %}
+
+
+
+ <!-- Blog Section Start -->
+ <div class="section section-margin-bottom">
+    <div class="container">
+        <div class="row m-b-n40 m-t-40">
+            {% for competetion in jsonresponse %}
+            <div class="col-lg-4 col-sm-6 m-b-40" data-aos="fade-up" data-aos-duration="1500">
+                <!-- Single Blog Wrapper Start -->
+                <div class="single-blog-wrapper blog-box">
+                    {% if competetion.league_logo %}
+                    <div class="single-blog-thumb">
+                        <a class="image" href="#"><img src="{{competetion.league_logo}}" alt="Blog Image"></a>
+                    </div>
+                    {% endif %}
+                    <div class="single-blog-content">
+                        <div class="blog-meta">
+                        </div>
+                        <h4 class="title"><a href="{% url 'league_match' country_name competetion.league_id %}">{{competetion.league_name}}</a></h4>                        
+                    </div>
+                </div>
+                <!-- Single Blog Wrapper End -->
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div>
+    {% for competetion in jsonresponse %}
+        {{competetion}}
+    {% endfor %}
+</div>
+<!-- Blog Section End -->
+
+
+{% endblock content %}
