@@ -23,9 +23,9 @@
     <meta property="og:site_name" content="{{ site_name }}">
 
     <!-- Twitter Card Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ page_title }}">
-    <meta name="twitter:description" content="{{ page_description }}">
+    <meta name="twitter:card" content="{{ post.feature_image.url }}">
+    <meta name="twitter:title" content="{{ post.title }}">
+    <meta name="twitter:description" content="{{ post.body|remove_headings|truncatechars_html:80|safe }}">
 
     <meta name="google-site-verification" content="{{ google_site_verification_code }}">
 
@@ -105,6 +105,7 @@
                                     <li><a href="{% url 'country_match' 'Wales' %}">Wales</a></li>
                                 </ul>
                             </li>
+                            <li><a href="{% url 'live_score' %}">Live Matches</a></li>
                         </ul>
                     </div>
                     <!-- Header Menu End -->

@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-q+e%x*7$j_k#j-mwso#pwf&357w8jqc2q2a$o*t9&yyh_nk^6m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['sports.speleb.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -42,7 +42,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'sport_site.urls'
@@ -73,9 +72,9 @@ WSGI_APPLICATION = 'sport_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'emponwns_sportsdata',
-        'USER': 'emponwns_sportsuser',
-        'PASSWORD': 'Delt@force143',
+        'NAME': 'sportsdb',
+        'USER': 'sportsuser',
+        'PASSWORD': 'S@mi123456',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
